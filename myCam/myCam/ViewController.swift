@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import Photos
+
 class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
    
     var session: AVCaptureSession!
@@ -47,26 +48,18 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.session.addOutput(output)
         self.session.commitConfiguration()
         
-    }        
+    }
     
     @IBAction func cameraPressed(_ sender: Any) {
         guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else {return}
             let settings = AVCapturePhotoSettings()
 
-        
-        let pbpf = settings.availablePreviewPhotoPixelFormatTypes[0]
-        let len = view.frame
-            
-            settings.previewPhotoFormat = [
-                kCVPixelBufferPixelFormatTypeKey as String : pbpf,
-                kCVPixelBufferWidthKey as String : len,
-                kCVPixelBufferHeightKey as String : len
-        ]
-        
         settings.embeddedThumbnailPhotoFormat =
             [ AVVideoCodecKey : AVVideoCodecType.jpeg
             ]
+        
         output.capturePhoto(with: settings, delegate: self)
+        
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -81,6 +74,5 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         req.addResource(with: .photo, data: data, options: nil) }
         }
     }
-    
 }
 
