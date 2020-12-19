@@ -10,42 +10,43 @@ import AVFoundation
 import Photos
 
 class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
-    
-    var session: AVCaptureSession!
-    var previewImage: UIImage!
+ 
+    @IBOutlet var switchButton: UIButton!
     
     var filters: Filters!
+    var input : AVCaptureDeviceInput!
+    var session: AVCaptureSession!
+    var previewImage: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        switchButton.setTitle("front", for: .normal)
+        self.session = AVCaptureSession()
+        self.filters = Filters()
         
+        //  Access front camera device
+        guard let cam = AVCaptureDevice.default(.builtInDualCamera,
+                                                for: AVMediaType.video,
+                                                position: .back),
+              let inp = try? AVCaptureDeviceInput(device: cam) else {
+            print("Unable to access back camera!")
+            return }
+        
+        self.input = inp
+ 
+        //  set camera device as input
+        self.session.addInput(input)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.session = AVCaptureSession()
-        
-        self.filters = Filters()
-
-        //  Access front camera device
-        guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                for: AVMediaType.video,
-                                                position: .front),
-              let input = try? AVCaptureDeviceInput(device: cam) else {
-            print("Unable to access back camera!")
-            return }
-        
-        //  set camera device as input
-        self.session.addInput(input)
-        
+           
         let lay = AVCaptureVideoPreviewLayer(session:self.session)
-        
         lay.frame = view.frame
-
         self.view.layer.addSublayer(lay)
        
-        filters.filter_hanan(text: "شكرًا، كمل", to: lay, videoSize: lay.frame.size)
+        filters.filter_hanan(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
         
         self.session.startRunning()
         
@@ -63,7 +64,38 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.session.addOutput(output)
         self.session.commitConfiguration()
     }
-    
+
+    @IBAction func changeInput(_ sender: UIButton) {
+        session.removeInput(input)
+
+        if sender.currentTitle == "front" {
+            sender.setTitle("back", for: .normal)
+            
+            guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                    for: AVMediaType.video,
+                                                    position: .front),
+                  let inp = try? AVCaptureDeviceInput(device: cam) else {
+                print("Unable to access back camera!")
+                return }
+            
+            self.input = inp
+            self.session.addInput(input)
+            
+        } else if sender.currentTitle == "back" {
+            sender.setTitle("front", for: .normal)
+            
+            guard let cam = AVCaptureDevice.default(.builtInDualCamera,
+                                                    for: AVMediaType.video,
+                                                    position: .back),
+                  let inp = try? AVCaptureDeviceInput(device: cam) else {
+                print("Unable to access back camera!")
+                return }
+            
+            self.input = inp
+            self.session.addInput(input)
+        }
+    }
+
     //  Capture still photo
     @IBAction func cameraPressed(_ sender: Any) {
         guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else {

@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 
 class Filters {
+    var textLayer: CATextLayer!
     
     func filter_hanan (text: String, to layer: CALayer, videoSize: CGSize) {
     
@@ -20,7 +21,7 @@ class Filters {
               .strokeColor: UIColor.white,
               .strokeWidth: -3])
           
-          let textLayer = CATextLayer()
+          textLayer = CATextLayer()
           textLayer.string = attributedText
           textLayer.shouldRasterize = true
           textLayer.rasterizationScale = UIScreen.main.scale
