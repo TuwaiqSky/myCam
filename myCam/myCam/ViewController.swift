@@ -22,31 +22,33 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.session = AVCaptureSession()
-        
-        guard let cam = AVCaptureDevice.default(for: .video),
-              let input = try? AVCaptureDeviceInput(device:cam) else { return
-        }
     
+        guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                       for: AVMediaType.video,
+                                                       position: .front),
+              
+              let input = try? AVCaptureDeviceInput(device: cam) else {
+                print("Unable to access back camera!")
+                return
+        }
+
         self.session.addInput(input)
         
         let lay = AVCaptureVideoPreviewLayer(session:self.session)
         lay.frame = view.frame
         self.view.layer.addSublayer(lay)
-        
         self.session.startRunning()
         
-        
         self.session.beginConfiguration()
-        
-        guard self.session.canSetSessionPreset(self.session.sessionPreset) else {return}
-        
-        self.session.sessionPreset = .photo
-        let output = AVCapturePhotoOutput()
-        guard self.session.canAddOutput(output) else {return}
-        self.session.addOutput(output)
-        self.session.commitConfiguration()
+               
+               guard self.session.canSetSessionPreset(self.session.sessionPreset) else {return}
+               
+               self.session.sessionPreset = .photo
+               let output = AVCapturePhotoOutput()
+               guard self.session.canAddOutput(output) else {return}
+               self.session.addOutput(output)
+               self.session.commitConfiguration()
         
     }
     
