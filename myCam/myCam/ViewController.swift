@@ -14,6 +14,8 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var session: AVCaptureSession!
     var previewImage: UIImage!
     
+    var filters: Filters!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -24,6 +26,8 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         super.viewDidAppear(animated)
         self.session = AVCaptureSession()
         
+        self.filters = Filters()
+
         //  Access front camera device
         guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                 for: AVMediaType.video,
@@ -36,8 +40,13 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.session.addInput(input)
         
         let lay = AVCaptureVideoPreviewLayer(session:self.session)
+        
         lay.frame = view.frame
+
         self.view.layer.addSublayer(lay)
+       
+        filters.filter_hanan(text: "شكرًا، كمل", to: lay, videoSize: lay.frame.size)
+        
         self.session.startRunning()
         
         //  configure capture session
