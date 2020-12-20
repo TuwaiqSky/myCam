@@ -6,119 +6,142 @@
 //
 
 import UIKit
-import AVFoundation
 import Photos
+import AVFoundation
 
 class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
+    //MARK: views
     @IBOutlet var topView: UIView!
     @IBOutlet var previewView: UIView!
     
+    //MARK: buttons
     @IBOutlet var captureButton: UIButton!
     @IBOutlet var switchButton: UIButton!
-
-    var lay :AVCaptureVideoPreviewLayer!
-    @IBOutlet weak var fillterControl: UISegmentedControl!
-
-    var filters: Filters!
-    var input : AVCaptureDeviceInput!
-    var session: AVCaptureSession!
     
+    //MARK: segmented control
+    @IBOutlet var fillterControl: UISegmentedControl!
+    
+    //MARK: images
     var previewImage: UIImage!
+    
+    //MARK: AVCapture instances
+    var session: AVCaptureSession!
+    var input : AVCaptureDeviceInput!
+    var lay: AVCaptureVideoPreviewLayer!
+    
+    //MARK: filters class instance
+    var filters: Filters!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.session = AVCaptureSession()
+
         self.filters = Filters()
-     
-        switchButton.setTitle("front", for: .normal)
         
-        //  Access front camera device
-        guard let cam = AVCaptureDevice.default(.builtInDualCamera,
-                                                for: AVMediaType.video,
-                                                position: .back),
-              let inp = try? AVCaptureDeviceInput(device: cam) else {
-            print("Unable to access back camera!")
-            return }
-        
-        self.input = inp
-        
-        //  set camera device as input
-        self.session.addInput(input)
-        
-    }
-
-    @objc func switchFillter (_ segmentControl : UISegmentedControl){
-        
-        switch segmentControl.selectedSegmentIndex{
-        
-        case 0 :
-            filters.textLayer.removeFromSuperlayer()
-//            filters.emitter.removeFromSuperlayer()
-
-            filters.filter_lama(to: lay, videoSize: lay.frame.size)
-            
-        case 1 :
-//            filters.emitter.removeFromSuperlayer()
-            filters.imageLayer.removeFromSuperlayer()
-            
-            filters.filter_hanan(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
-        
-        default:
-            break
-        }
+        // set title for switchButton
+        switchButton.setTitle("back", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
         fillterControl.addTarget(self, action: #selector(switchFillter), for: .touchUpInside)
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.session = AVCaptureSession()
         
-        self.lay = AVCaptureVideoPreviewLayer(session:self.session)
-
-        self.lay.frame = previewView.frame
-        self.lay.videoGravity = .resizeAspectFill
+        // camera setup
+        setupInputDevice()
+        setupViedoPreview()
+        setupSessionConfig()
         
-        self.previewView.layer.addSublayer(lay)
-
-        self.session.startRunning()
-        
-        //  configure capture session
-        self.session.beginConfiguration()
-        
-        guard self.session.canSetSessionPreset(self.session.sessionPreset) else {
-            return }
-        
-        self.session.sessionPreset = .photo
-        let output = AVCapturePhotoOutput()
-        guard self.session.canAddOutput(output) else {
-            return }
-        
-        self.session.addOutput(output)
-        self.session.commitConfiguration()
     }
     
+    //MARK:  Access camera device, set camera device as input
+    func setupInputDevice() {
+        if switchButton.currentTitle == "front" {
+            switchButton.setTitle("back", for: .normal)
+            
+            guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                    for: AVMediaType.video,
+                                                    position: .front),
+                  let inp = try? AVCaptureDeviceInput(device: cam) else {
+                print("Unable to access back camera!")
+                return }
+            
+            self.input = inp
+            self.session.addInput(input)
+            
+        } else if switchButton.currentTitle == "back" {
+            switchButton.setTitle("front", for: .normal)
+            
+            guard let cam = AVCaptureDevice.default(.builtInDualCamera,
+                                                    for: AVMediaType.video,
+                                                    position: .back),
+                  let inp = try? AVCaptureDeviceInput(device: cam) else {
+                print("Unable to access back camera!")
+                return }
+            
+            self.input = inp
+            self.session.addInput(input)
+        }
+    }
     
-    //  Capture still photo
+    //MARK: set up video preview layer
+    func setupViedoPreview() {
+        self.lay = AVCaptureVideoPreviewLayer(session:self.session)
+        self.previewView.layer.insertSublayer(lay, below: topView.layer)
+
+        lay.frame = view.frame
+        lay.videoGravity = .resizeAspectFill
+    }
+    
+    func setupSessionConfig(){
+        DispatchQueue.global(qos: .userInitiated).async {
+            //MARK: start config
+            self.session.beginConfiguration()
+            
+            // confiugration
+            guard self.session.canSetSessionPreset(self.session.sessionPreset) else { return }
+            self.session.sessionPreset = .photo
+            
+            self.session.automaticallyConfiguresCaptureDeviceForWideColor = true
+          
+            let output = AVCapturePhotoOutput()
+            
+            guard self.session.canAddOutput(output) else { return }
+            self.session.addOutput(output)
+            
+            //MARK: commit config
+            self.session.commitConfiguration()
+            
+            // run session
+            self.session.startRunning()
+        }
+    }
+    
+    //MARK: swich camera input
+    @IBAction func flipCam(_ sender: UIButton) {
+        session.removeInput(input)
+        
+        setupInputDevice()
+    }
+    
+    //MARK: capture still photo
     @IBAction func capturePhoto(_ sender: UIButton) {
-        guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else {
-            return }
+        guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else { return }
         
         let settings = AVCapturePhotoSettings()
         
         settings.embeddedThumbnailPhotoFormat = [
-            AVVideoCodecKey : AVVideoCodecType.jpeg
-        ]
+            AVVideoCodecKey : AVVideoCodecType.jpeg ]
         
         output.capturePhoto(with: settings, delegate: self)
     }
     
-    // Save captured photo into user's PhotoLibrary
+    //MARK: Save captured photo into user's PhotoLibrary
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let cgim = photo.previewCGImageRepresentation()?.takeUnretainedValue() {
             let orient =  UIImage.Orientation.right
@@ -134,79 +157,25 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    // swich camera input
-    @IBAction func flipCam(_ sender: UIButton) {
-        session.removeInput(input)
+    //MARK: swich between filters
+    @objc func switchFillter (_ segmentControl : UISegmentedControl){
         
-        if sender.currentTitle == "front" {
-            sender.setTitle("back", for: .normal)
+        switch segmentControl.selectedSegmentIndex{
+        
+        case 0 :
+            filters.textLayer.removeFromSuperlayer()
+            //            filters.emitter.removeFromSuperlayer()
             
-            guard let cam = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                    for: AVMediaType.video,
-                                                    position: .front),
-                  let inp = try? AVCaptureDeviceInput(device: cam) else {
-                print("Unable to access back camera!")
-                return }
+            filters.addFireworksImage(to: lay, videoSize: lay.frame.size)
             
-            self.input = inp
-            self.session.addInput(input)
-            
-        } else if sender.currentTitle == "back" {
-            sender.setTitle("front", for: .normal)
-            
-            guard let cam = AVCaptureDevice.default(.builtInDualCamera,
-                                                    for: AVMediaType.video,
-                                                    position: .back),
-                  let inp = try? AVCaptureDeviceInput(device: cam) else {
-                print("Unable to access back camera!")
-                return }
-            
-            self.input = inp
-            self.session.addInput(input)
-        }
-    }
-    
-    @IBAction func fillterModeChange(_ sender: UISegmentedControl) {
-        switch fillterControl.selectedSegmentIndex {
-        case 0:
-            filters.emitter?.removeFromSuperlayer()
-            filters.textLayer2?.removeFromSuperlayer()
-            filters.imageLayer1?.removeFromSuperlayer()
-            filters.imageLayer2?.removeFromSuperlayer()
-            
-            filters.textLayer?.removeFromSuperlayer()
+        case 1 :
+            //            filters.emitter.removeFromSuperlayer()
             filters.imageLayer.removeFromSuperlayer()
-        case 1:
-            filters.emitter?.removeFromSuperlayer()
-            filters.textLayer2?.removeFromSuperlayer()
-               filters.imageLayer1?.removeFromSuperlayer()
-               filters.imageLayer2?.removeFromSuperlayer()
-            filters.textLayer?.removeFromSuperlayer()
-            filters.imageLayer1?.removeFromSuperlayer()
-            filters.filter_lama( to: lay, videoSize: lay.frame.size)
-        
-        case 2 :
-            filters.emitter?.removeFromSuperlayer()
-            filters.textLayer2?.removeFromSuperlayer()
-               filters.imageLayer1?.removeFromSuperlayer()
-               filters.imageLayer2?.removeFromSuperlayer()
-            filters.imageLayer?.removeFromSuperlayer()
-           
-            filters.filter_hanan(text: "welcome", to: lay, videoSize: lay.frame.size)
-            filters.addConfetti(to: lay)
-        
-        case 3:
-            filters.emitter?.removeFromSuperlayer()
-            filters.textLayer2?.removeFromSuperlayer()
-            filters.imageLayer1?.removeFromSuperlayer()
-            filters.imageLayer2?.removeFromSuperlayer()
-            filters.textLayer?.removeFromSuperlayer()
-            filters.imageLayer?.removeFromSuperlayer()
             
-            filters.filter_ashwaq(text: "Hello 2021 ", to: lay, videoSize: lay.frame.size)
+            filters.addTextFilter(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
+            
         default:
             break
         }
     }
-
 }
