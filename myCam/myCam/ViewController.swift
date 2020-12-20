@@ -23,7 +23,6 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     var filters: Filters!
     var input : AVCaptureDeviceInput!
     var session: AVCaptureSession!
-    var lay: AVCaptureVideoPreviewLayer!
     
     var previewImage: UIImage!
     
