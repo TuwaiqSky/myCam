@@ -11,76 +11,53 @@ import AVFoundation
 
 class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
-    // views
+    //MARK: views
     @IBOutlet var topView: UIView!
     @IBOutlet var previewView: UIView!
     
-    // buttons
+    //MARK: buttons
     @IBOutlet var captureButton: UIButton!
     @IBOutlet var switchButton: UIButton!
     
-    // segmented control
+    //MARK: segmented control
     @IBOutlet var fillterControl: UISegmentedControl!
     
-    // images
+    //MARK: images
     var previewImage: UIImage!
     
-    // AVCapture instances
+    //MARK: AVCapture instances
     var session: AVCaptureSession!
     var input : AVCaptureDeviceInput!
     var lay: AVCaptureVideoPreviewLayer!
     
-    // filters class instance
+    //MARK: filters class instance
     var filters: Filters!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.session = AVCaptureSession()
         self.filters = Filters()
         
         // set title for switchButton
-        switchButton.setTitle("front", for: .normal)
-        
-        //  Access camera device, set camera device as input
-        addInputDevice()
+        switchButton.setTitle("back", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
         fillterControl.addTarget(self, action: #selector(switchFillter), for: .touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.session = AVCaptureSession()
         
-        // set up video preview layer
-        self.lay = AVCaptureVideoPreviewLayer(session:self.session)
-        lay.frame = previewView.frame
-        lay.videoGravity = .resizeAspectFill
-        self.previewView.layer.addSublayer(lay)
-        
-        self.session.startRunning()
-        
-        //  configure capture session
-        self.session.beginConfiguration()
-        
-        guard self.session.canSetSessionPreset(self.session.sessionPreset) else {
-            return }
-        
-        self.session.sessionPreset = .photo
-        
-        // configure output as photo output
-        let output = AVCapturePhotoOutput()
-        
-        guard self.session.canAddOutput(output) else {
-            return }
-        
-        self.session.addOutput(output)
-        self.session.commitConfiguration()
+        // camera setup
+        addInputDevice()
+        viedoPreviewSetup()
     }
     
-    // device input -> front camera | back camera
+    //MARK:  Access camera device, set camera device as input
     func addInputDevice() {
         if switchButton.currentTitle == "front" {
             switchButton.setTitle("back", for: .normal)
@@ -110,17 +87,46 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    // swich camera input
+    //MARK:  set up video preview layer
+    func viedoPreviewSetup() {
+        self.lay = AVCaptureVideoPreviewLayer(session:self.session)
+        lay.frame = previewView.frame
+        lay.videoGravity = .resizeAspectFill
+        self.previewView.layer.addSublayer(lay)
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            //MARK: start config
+            self.session.beginConfiguration()
+            
+            // confiugration
+            guard self.session.canSetSessionPreset(self.session.sessionPreset) else {
+                return }
+            
+            self.session.sessionPreset = .photo
+            let output = AVCapturePhotoOutput()
+            
+            guard self.session.canAddOutput(output) else { return }
+
+            self.session.addOutput(output)
+            
+            //MARK: commit config
+            self.session.commitConfiguration()
+            
+            // run session
+            self.session.startRunning()
+        }
+    }
+    
+    //MARK: swich camera input
     @IBAction func flipCam(_ sender: UIButton) {
         session.removeInput(input)
         
         addInputDevice()
     }
     
-    //  Capture still photo
+    //MARK: capture still photo
     @IBAction func capturePhoto(_ sender: UIButton) {
-        guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else {
-            return }
+        guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else { return }
         
         let settings = AVCapturePhotoSettings()
         
@@ -130,7 +136,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         output.capturePhoto(with: settings, delegate: self)
     }
     
-    // Save captured photo into user's PhotoLibrary
+    //MARK: Save captured photo into user's PhotoLibrary
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let cgim = photo.previewCGImageRepresentation()?.takeUnretainedValue() {
             let orient =  UIImage.Orientation.right
@@ -146,7 +152,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    // swich between filters
+    //MARK: swich between filters
     @objc func switchFillter (_ segmentControl : UISegmentedControl){
         
         switch segmentControl.selectedSegmentIndex{
