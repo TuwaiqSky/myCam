@@ -16,8 +16,10 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     @IBOutlet var captureButton: UIButton!
     @IBOutlet var switchButton: UIButton!
-    @IBOutlet var fillterControl: UISegmentedControl!
-    
+
+    var lay :AVCaptureVideoPreviewLayer!
+    @IBOutlet weak var fillterControl: UISegmentedControl!
+
     var filters: Filters!
     var input : AVCaptureDeviceInput!
     var session: AVCaptureSession!
@@ -30,7 +32,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         // Do any additional setup after loading the view.
         self.session = AVCaptureSession()
         self.filters = Filters()
-        
+     
         switchButton.setTitle("front", for: .normal)
         
         //  Access front camera device
@@ -79,15 +81,12 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         super.viewDidAppear(animated)
         
         self.lay = AVCaptureVideoPreviewLayer(session:self.session)
-        lay.frame = previewView.frame
-        lay.videoGravity = .resizeAspectFill
+
+        self.lay.frame = previewView.frame
+        self.lay.videoGravity = .resizeAspectFill
         
         self.previewView.layer.addSublayer(lay)
-        
-//        filters.filter_lama(to: lay, videoSize: lay.frame.size)
-        filters.filter_hanan(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
 
-        
         self.session.startRunning()
         
         //  configure capture session
@@ -168,13 +167,47 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
+    @IBAction func fillterModeChange(_ sender: UISegmentedControl) {
+        switch fillterControl.selectedSegmentIndex {
+        case 0:
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.imageLayer2?.removeFromSuperlayer()
+            
+            filters.textLayer?.removeFromSuperlayer()
+            filters.imageLayer.removeFromSuperlayer()
+        case 1:
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+               filters.imageLayer1?.removeFromSuperlayer()
+               filters.imageLayer2?.removeFromSuperlayer()
+            filters.textLayer?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.filter_lama( to: lay, videoSize: lay.frame.size)
+        
+        case 2 :
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+               filters.imageLayer1?.removeFromSuperlayer()
+               filters.imageLayer2?.removeFromSuperlayer()
+            filters.imageLayer?.removeFromSuperlayer()
+           
+            filters.filter_hanan(text: "welcome", to: lay, videoSize: lay.frame.size)
+            filters.addConfetti(to: lay)
+        
+        case 3:
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.imageLayer2?.removeFromSuperlayer()
+            filters.textLayer?.removeFromSuperlayer()
+            filters.imageLayer?.removeFromSuperlayer()
+            
+            filters.filter_ashwaq(text: "Hello 2021 ", to: lay, videoSize: lay.frame.size)
+        default:
+            break
+        }
+    }
+
 }
-
-
-
-
-
-
-
-
-

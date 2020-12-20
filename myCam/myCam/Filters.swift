@@ -10,11 +10,14 @@ import AVFoundation
 
 class Filters {
     var textLayer: CATextLayer!
-    var emitter: CAEmitterLayer!
-    var imageLayer: CALayer!
-    
-    func filter_hanan (text: String, to layer: CALayer, videoSize: CGSize) {
 
+    var imageLayer : CALayer!
+    var imageLayer1:CALayer!
+    var imageLayer2: CALayer!
+    var textLayer2: CATextLayer!
+    var emitter : CAEmitterLayer!
+    func filter_hanan (text: String, to layer: CALayer, videoSize: CGSize) {
+        
           let attributedText = NSAttributedString(
             string: text,
             attributes: [
@@ -71,6 +74,7 @@ class Filters {
         return cell
       }
       
+      self.emitter = CAEmitterLayer()
 
       emitter.emitterPosition = CGPoint(x: layer.frame.size.width / 2, y: layer.frame.size.height + 5)
       emitter.emitterShape = .line
@@ -80,7 +84,69 @@ class Filters {
       layer.addSublayer(emitter)
     }
         
-    func filter_ashwaq () {
+    
+    func filter_ashwaq (text: String, to layer: CALayer, videoSize: CGSize) {
+        
+        
+        
+        let image1 = UIImage(named: "ashwaq")!
+        self.imageLayer1 = CALayer()
+
+        let aspect1: CGFloat = image1.size.width / image1.size.height
+              let width = videoSize.width
+              let height = width / aspect1
+        imageLayer1.frame = CGRect(
+                x: -171 ,
+                y: -187,
+                width: 714,
+                height: 556)
+
+              imageLayer1.contents = image1.cgImage
+              layer.addSublayer(imageLayer1)
+        //
+        
+        let image2 = UIImage(named: "trees")!
+        self.imageLayer2 = CALayer()
+              
+        let aspect2: CGFloat = image2.size.width / image2.size.height
+              let width2 = videoSize.width
+              let height2 = width2 / aspect2
+        
+              imageLayer2.frame = CGRect(
+                x: -85 ,
+                y: 550 ,
+                width: width2,
+                height: height2)
+              imageLayer2.contents = image2.cgImage
+              layer.addSublayer(imageLayer2)
+        //
+        
+        let attributedText = NSAttributedString(
+          string: text,
+          attributes: [
+            .font: UIFont(name: "zapfino", size: 25) as Any,
+            .foregroundColor: UIColor.red ,
+            .strokeColor: UIColor.white,
+            .strokeWidth: -2])
+        
+        self.textLayer2 = CATextLayer()
+        textLayer2.string = attributedText
+        textLayer2.shouldRasterize = true
+        textLayer2.rasterizationScale = UIScreen.main.scale
+        textLayer2.backgroundColor = UIColor.clear.cgColor
+        textLayer2.alignmentMode = .center
+        
+        textLayer2.frame = CGRect(
+          x: 10,
+          y: 200 ,
+          width: videoSize.width,
+          height: 150)
+        textLayer2.displayIfNeeded()
+        layer.addSublayer(textLayer2)
+        
+            
+        
+        
         
     }
     
@@ -91,6 +157,8 @@ class Filters {
     func filter_lama (to layer: CALayer, videoSize: CGSize) {
  
         let image = UIImage(named: "fireworks")!
+        self.imageLayer = CALayer()
+
               
         let aspect: CGFloat = image.size.width / image.size.height
               let width = videoSize.width
@@ -122,6 +190,8 @@ class Filters {
         
         layer.addSublayer(imageLayer)
         
+        }
+
     }
 
 }
