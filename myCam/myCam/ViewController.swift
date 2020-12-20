@@ -179,12 +179,3 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
