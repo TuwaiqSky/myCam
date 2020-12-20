@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,6 +42,19 @@
                                             <action selector="flipCam:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r8O-qq-KX3"/>
                                         </connections>
                                     </button>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NE2-Zh-Fyi">
+                                        <rect key="frame" x="57" y="80" width="228" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Orignal"/>
+                                            <segment title="Fillter"/>
+                                            <segment title=""/>
+                                            <segment title=""/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="fillterModeChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="5tw-GS-2ZP"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -68,6 +81,7 @@
                     </view>
                     <connections>
                         <outlet property="captureButton" destination="6lf-KJ-f1f" id="myK-kr-wC2"/>
+                        <outlet property="fillterControl" destination="NE2-Zh-Fyi" id="tIX-Sy-OWQ"/>
                         <outlet property="previewView" destination="8Hd-33-duF" id="2Fq-qp-joN"/>
                         <outlet property="switchButton" destination="2Jh-1c-uOq" id="OZ8-DT-xaa"/>
                         <outlet property="topView" destination="zCy-Ac-ie5" id="ESr-dY-Exi"/>
