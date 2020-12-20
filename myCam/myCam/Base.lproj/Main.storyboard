@@ -42,6 +42,14 @@
                                             <action selector="flipCam:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r8O-qq-KX3"/>
                                         </connections>
                                     </button>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="nI4-B9-bui">
+                                        <rect key="frame" x="90" y="84" width="127" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Orignal"/>
+                                            <segment title="filtter"/>
+                                        </segments>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -68,6 +76,7 @@
                     </view>
                     <connections>
                         <outlet property="captureButton" destination="6lf-KJ-f1f" id="myK-kr-wC2"/>
+                        <outlet property="fillterControl" destination="nI4-B9-bui" id="92o-nF-11c"/>
                         <outlet property="previewView" destination="8Hd-33-duF" id="2Fq-qp-joN"/>
                         <outlet property="switchButton" destination="2Jh-1c-uOq" id="OZ8-DT-xaa"/>
                         <outlet property="topView" destination="zCy-Ac-ie5" id="ESr-dY-Exi"/>
