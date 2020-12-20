@@ -3,7 +3,6 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,39 +15,71 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiI-ZH-4zc">
-                                <rect key="frame" x="192" y="806" width="31" height="23"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
-                                </state>
-                                <connections>
-                                    <action selector="cameraPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6oe-uL-7bR"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gz9-la-BDF">
-                                <rect key="frame" x="331" y="123" width="25" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="camera.rotate.fill" catalog="system"/>
-                                <connections>
-                                    <action selector="changeInput:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kvk-a1-AHb"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Hd-33-duF" userLabel="previewView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCy-Ac-ie5" userLabel="topView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6lf-KJ-f1f">
+                                        <rect key="frame" x="170" y="780" width="74" height="76"/>
+                                        <inset key="contentEdgeInsets" minX="1" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-20" minY="2" maxX="-20" maxY="2"/>
+                                        <state key="normal" image="captureCam"/>
+                                        <connections>
+                                            <action selector="capturePhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="45C-EU-0WK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Jh-1c-uOq">
+                                        <rect key="frame" x="340" y="80" width="64" height="38"/>
+                                        <inset key="contentEdgeInsets" minX="-15" minY="0.0" maxX="0.0" maxY="-8"/>
+                                        <inset key="imageEdgeInsets" minX="14" minY="-5" maxX="-2" maxY="-1"/>
+                                        <state key="normal" image="flipCam">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="flipCam:" destination="BYZ-38-t0r" eventType="touchUpInside" id="r8O-qq-KX3"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="6lf-KJ-f1f" firstAttribute="leading" secondItem="zCy-Ac-ie5" secondAttribute="leading" constant="170" id="47c-hv-hOf"/>
+                                    <constraint firstAttribute="bottom" secondItem="6lf-KJ-f1f" secondAttribute="bottom" constant="40" id="9ai-H4-RMP"/>
+                                    <constraint firstItem="2Jh-1c-uOq" firstAttribute="top" secondItem="zCy-Ac-ie5" secondAttribute="top" constant="80" id="Be1-J6-PIr"/>
+                                    <constraint firstAttribute="trailing" secondItem="6lf-KJ-f1f" secondAttribute="trailing" constant="170" id="h9Z-ao-HKF"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Jh-1c-uOq" secondAttribute="trailing" constant="10" id="hHk-or-bEn"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="zCy-Ac-ie5" secondAttribute="bottom" id="4Oc-Yn-fLj"/>
+                            <constraint firstAttribute="bottom" secondItem="8Hd-33-duF" secondAttribute="bottom" id="Nft-CY-WLN"/>
+                            <constraint firstItem="zCy-Ac-ie5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="TTb-aj-kZK"/>
+                            <constraint firstItem="8Hd-33-duF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="YRY-fu-Ofd"/>
+                            <constraint firstItem="8Hd-33-duF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="YdP-Z5-a08"/>
+                            <constraint firstItem="zCy-Ac-ie5" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="dBK-hO-C4a"/>
+                            <constraint firstAttribute="trailing" secondItem="zCy-Ac-ie5" secondAttribute="trailing" id="ebq-ic-gw8"/>
+                            <constraint firstAttribute="trailing" secondItem="8Hd-33-duF" secondAttribute="trailing" id="lyQ-7p-tRO"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="switchButton" destination="gz9-la-BDF" id="fPS-x1-fvD"/>
+                        <outlet property="captureButton" destination="6lf-KJ-f1f" id="myK-kr-wC2"/>
+                        <outlet property="previewView" destination="8Hd-33-duF" id="2Fq-qp-joN"/>
+                        <outlet property="switchButton" destination="2Jh-1c-uOq" id="OZ8-DT-xaa"/>
+                        <outlet property="topView" destination="zCy-Ac-ie5" id="ESr-dY-Exi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="122" y="119"/>
+            <point key="canvasLocation" x="121.73913043478262" y="118.52678571428571"/>
         </scene>
     </scenes>
     <resources>
-        <image name="camera.fill" catalog="system" width="128" height="94"/>
-        <image name="camera.rotate.fill" catalog="system" width="128" height="94"/>
+        <image name="captureCam" width="78" height="76"/>
+        <image name="flipCam" width="79" height="46"/>
     </resources>
 </document>
