@@ -58,13 +58,13 @@
 		E381FAB0258E219A00A0EE38 /* myCam */ = {
 			isa = PBXGroup;
 			children = (
-				E381FAB1258E219A00A0EE38 /* AppDelegate.swift */,
-				E381FAB3258E219A00A0EE38 /* SceneDelegate.swift */,
-				E381FAB5258E219A00A0EE38 /* ViewController.swift */,
-				E381FAB7258E219A00A0EE38 /* Main.storyboard */,
+				E381FABF258E219D00A0EE38 /* Info.plist */,
 				E381FABA258E219D00A0EE38 /* Assets.xcassets */,
 				E381FABC258E219D00A0EE38 /* LaunchScreen.storyboard */,
-				E381FABF258E219D00A0EE38 /* Info.plist */,
+				E381FAB1258E219A00A0EE38 /* AppDelegate.swift */,
+				E381FAB3258E219A00A0EE38 /* SceneDelegate.swift */,
+				E381FAB7258E219A00A0EE38 /* Main.storyboard */,
+				E381FAB5258E219A00A0EE38 /* ViewController.swift */,
 				E3B43FE3258E6A1F009BB7BA /* Filters.swift */,
 			);
 			path = myCam;
