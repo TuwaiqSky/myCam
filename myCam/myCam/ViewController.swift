@@ -16,12 +16,15 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     @IBOutlet var captureButton: UIButton!
     @IBOutlet var switchButton: UIButton!
+
     var lay :AVCaptureVideoPreviewLayer!
     @IBOutlet weak var fillterControl: UISegmentedControl!
-    
+
     var filters: Filters!
     var input : AVCaptureDeviceInput!
     var session: AVCaptureSession!
+    var lay: AVCaptureVideoPreviewLayer!
+    
     var previewImage: UIImage!
     
     override func viewDidLoad() {
@@ -44,18 +47,45 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         //  set camera device as input
         self.session.addInput(input)
+        
+    }
+
+    @objc func switchFillter (_ segmentControl : UISegmentedControl){
+        
+        switch segmentControl.selectedSegmentIndex{
+        
+        case 0 :
+            filters.textLayer.removeFromSuperlayer()
+//            filters.emitter.removeFromSuperlayer()
+
+            filters.filter_lama(to: lay, videoSize: lay.frame.size)
+            
+        case 1 :
+//            filters.emitter.removeFromSuperlayer()
+            filters.imageLayer.removeFromSuperlayer()
+            
+            filters.filter_hanan(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
+        
+        default:
+            break
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        fillterControl.addTarget(self, action: #selector(switchFillter), for: .touchUpInside)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.lay = AVCaptureVideoPreviewLayer(session:self.session)
+
         self.lay.frame = previewView.frame
         self.lay.videoGravity = .resizeAspectFill
         
         self.previewView.layer.addSublayer(lay)
-        
-//        filters.filter_lama( to: lay, videoSize: lay.frame.size)
 
         self.session.startRunning()
         
@@ -179,17 +209,5 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             break
         }
     }
-    
-    
-   
-    
+
 }
-
-
-
-
-
-
-
-
-

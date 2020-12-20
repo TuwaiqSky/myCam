@@ -10,6 +10,7 @@ import AVFoundation
 
 class Filters {
     var textLayer: CATextLayer!
+
     var imageLayer : CALayer!
     var imageLayer1:CALayer!
     var imageLayer2: CALayer!
@@ -17,9 +18,6 @@ class Filters {
     var emitter : CAEmitterLayer!
     func filter_hanan (text: String, to layer: CALayer, videoSize: CGSize) {
         
-        
-        
-    
           let attributedText = NSAttributedString(
             string: text,
             attributes: [
@@ -77,6 +75,7 @@ class Filters {
       }
       
       self.emitter = CAEmitterLayer()
+
       emitter.emitterPosition = CGPoint(x: layer.frame.size.width / 2, y: layer.frame.size.height + 5)
       emitter.emitterShape = .line
       emitter.emitterSize = CGSize(width: layer.frame.size.width, height: 2)
@@ -85,8 +84,6 @@ class Filters {
       layer.addSublayer(emitter)
     }
         
-    
-    
     
     func filter_ashwaq (text: String, to layer: CALayer, videoSize: CGSize) {
         
@@ -158,11 +155,10 @@ class Filters {
     }
     
     func filter_lama (to layer: CALayer, videoSize: CGSize) {
-        
-    
-        
+ 
         let image = UIImage(named: "fireworks")!
         self.imageLayer = CALayer()
+
               
         let aspect: CGFloat = image.size.width / image.size.height
               let width = videoSize.width
@@ -195,6 +191,7 @@ class Filters {
         layer.addSublayer(imageLayer)
         
         }
-    
+
     }
 
+}
