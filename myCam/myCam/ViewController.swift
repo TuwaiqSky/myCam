@@ -47,6 +47,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.view.layer.addSublayer(lay)
        
         filters.filter_hanan(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
+        filters.addConfetti(to: lay)
         
         self.session.startRunning()
         
@@ -98,6 +99,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
 
     //  Capture still photo
     @IBAction func cameraPressed(_ sender: Any) {
+        
         guard let output = self.session.outputs[0] as? AVCapturePhotoOutput else {
             return }
         
