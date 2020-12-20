@@ -35,7 +35,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         self.filters = Filters()
         
         // set title for switchButton
@@ -53,12 +53,14 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         self.session = AVCaptureSession()
         
         // camera setup
-        addInputDevice()
-        viedoPreviewSetup()
+        setupInputDevice()
+        setupViedoPreview()
+        setupSessionConfig()
+        
     }
     
     //MARK:  Access camera device, set camera device as input
-    func addInputDevice() {
+    func setupInputDevice() {
         if switchButton.currentTitle == "front" {
             switchButton.setTitle("back", for: .normal)
             
@@ -87,26 +89,29 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         }
     }
     
-    //MARK:  set up video preview layer
-    func viedoPreviewSetup() {
+    //MARK: set up video preview layer
+    func setupViedoPreview() {
         self.lay = AVCaptureVideoPreviewLayer(session:self.session)
-        lay.frame = previewView.frame
+        self.previewView.layer.insertSublayer(lay, below: topView.layer)
+
+        lay.frame = view.frame
         lay.videoGravity = .resizeAspectFill
-        self.previewView.layer.addSublayer(lay)
-        
+    }
+    
+    func setupSessionConfig(){
         DispatchQueue.global(qos: .userInitiated).async {
             //MARK: start config
             self.session.beginConfiguration()
             
             // confiugration
-            guard self.session.canSetSessionPreset(self.session.sessionPreset) else {
-                return }
-            
+            guard self.session.canSetSessionPreset(self.session.sessionPreset) else { return }
             self.session.sessionPreset = .photo
+            
+            self.session.automaticallyConfiguresCaptureDeviceForWideColor = true
+          
             let output = AVCapturePhotoOutput()
             
             guard self.session.canAddOutput(output) else { return }
-
             self.session.addOutput(output)
             
             //MARK: commit config
@@ -121,7 +126,7 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     @IBAction func flipCam(_ sender: UIButton) {
         session.removeInput(input)
         
-        addInputDevice()
+        setupInputDevice()
     }
     
     //MARK: capture still photo
