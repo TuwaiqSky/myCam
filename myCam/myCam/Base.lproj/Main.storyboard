@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,9 +32,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Jh-1c-uOq">
-                                        <rect key="frame" x="340" y="80" width="64" height="38"/>
-                                        <inset key="contentEdgeInsets" minX="-15" minY="0.0" maxX="0.0" maxY="-8"/>
-                                        <inset key="imageEdgeInsets" minX="14" minY="-5" maxX="-2" maxY="-1"/>
+                                        <rect key="frame" x="362" y="74" width="52" height="34"/>
+                                        <inset key="contentEdgeInsets" minX="-22" minY="3" maxX="-5" maxY="-15"/>
+                                        <inset key="imageEdgeInsets" minX="20" minY="-2" maxX="5" maxY="4"/>
                                         <state key="normal" image="flipCam">
                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -43,13 +43,13 @@
                                         </connections>
                                     </button>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NE2-Zh-Fyi">
-                                        <rect key="frame" x="57" y="80" width="228" height="32"/>
+                                        <rect key="frame" x="18" y="80" width="306" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Orignal"/>
-                                            <segment title="Fillter"/>
-                                            <segment title=""/>
-                                            <segment title=""/>
+                                            <segment title="Fireworks"/>
+                                            <segment title="Welcome"/>
+                                            <segment title="New Year"/>
                                         </segments>
                                         <connections>
                                             <action selector="fillterModeChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="XwH-h6-g0P"/>
@@ -60,9 +60,9 @@
                                 <constraints>
                                     <constraint firstItem="6lf-KJ-f1f" firstAttribute="leading" secondItem="zCy-Ac-ie5" secondAttribute="leading" constant="170" id="47c-hv-hOf"/>
                                     <constraint firstAttribute="bottom" secondItem="6lf-KJ-f1f" secondAttribute="bottom" constant="40" id="9ai-H4-RMP"/>
-                                    <constraint firstItem="2Jh-1c-uOq" firstAttribute="top" secondItem="zCy-Ac-ie5" secondAttribute="top" constant="80" id="Be1-J6-PIr"/>
+                                    <constraint firstItem="2Jh-1c-uOq" firstAttribute="top" secondItem="zCy-Ac-ie5" secondAttribute="top" constant="74" id="Be1-J6-PIr"/>
                                     <constraint firstAttribute="trailing" secondItem="6lf-KJ-f1f" secondAttribute="trailing" constant="170" id="h9Z-ao-HKF"/>
-                                    <constraint firstAttribute="trailing" secondItem="2Jh-1c-uOq" secondAttribute="trailing" constant="10" id="hHk-or-bEn"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Jh-1c-uOq" secondAttribute="trailing" id="hHk-or-bEn"/>
                                 </constraints>
                             </view>
                         </subviews>
