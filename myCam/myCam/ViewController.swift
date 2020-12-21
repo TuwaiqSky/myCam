@@ -158,24 +158,52 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
     }
     
     //MARK: swich between filters
-    @objc func switchFillter (_ segmentControl : UISegmentedControl){
-        
-        switch segmentControl.selectedSegmentIndex{
-        
-        case 0 :
-            filters.textLayer.removeFromSuperlayer()
-            //            filters.emitter.removeFromSuperlayer()
+
+    @IBAction func fillterModeChange(_ sender: UISegmentedControl) {
+        switch fillterControl.selectedSegmentIndex {
+        case 0:
+            filters.textLayer?.removeFromSuperlayer()
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.imageLayer2?.removeFromSuperlayer()
             
-            filters.addFireworksImage(to: lay, videoSize: lay.frame.size)
-            
-        case 1 :
-            //            filters.emitter.removeFromSuperlayer()
+            filters.textLayer?.removeFromSuperlayer()
             filters.imageLayer.removeFromSuperlayer()
+        case 1:
+            filters.textLayer?.removeFromSuperlayer()
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+               filters.imageLayer1?.removeFromSuperlayer()
+               filters.imageLayer2?.removeFromSuperlayer()
+            filters.textLayer?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.filter_lama( to: lay, videoSize: lay.frame.size)
+        
+        case 2 :
+            filters.textLayer?.removeFromSuperlayer()
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+               filters.imageLayer1?.removeFromSuperlayer()
+               filters.imageLayer2?.removeFromSuperlayer()
+            filters.imageLayer?.removeFromSuperlayer()
+           
+            filters.filter_hanan(text: "welcome", to: lay, videoSize: lay.frame.size)
+            filters.addConfetti(to: lay)
+        
+        case 3:
+            filters.emitter?.removeFromSuperlayer()
+            filters.textLayer2?.removeFromSuperlayer()
+            filters.imageLayer1?.removeFromSuperlayer()
+            filters.imageLayer2?.removeFromSuperlayer()
+            filters.textLayer?.removeFromSuperlayer()
+            filters.imageLayer?.removeFromSuperlayer()
             
-            filters.addTextFilter(text: "Hello, World!", to: lay, videoSize: lay.frame.size)
-            
+            filters.filter_ashwaq(text: "Hello 2021 ", to: lay, videoSize: lay.frame.size)
         default:
             break
         }
     }
+    
+    
 }
