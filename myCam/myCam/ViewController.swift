@@ -42,12 +42,6 @@ class ViewController: UIViewController, AVCapturePhotoCaptureDelegate {
         switchButton.setTitle("back", for: .normal)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        fillterControl.addTarget(self, action: #selector(switchFillter), for: .touchUpInside)
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.session = AVCaptureSession()
